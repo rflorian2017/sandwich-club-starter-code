@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -43,10 +44,11 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-        populateUI();
+        populateUI(sandwich); //add the sandwich object as a parameter
         Picasso.with(this)
                 .load(sandwich.getImage())
                 .into(ingredientsIv);
+
 
         setTitle(sandwich.getMainName());
     }
@@ -56,7 +58,29 @@ public class DetailActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
-    private void populateUI() {
+    private void populateUI(Sandwich sandwich) {
+
+        /**
+         * Create a text view for each data that has to be filled in the UI and initialize it with the corresponding text view
+         * For each data, use the get methods of the sandwich object. Where the data is a list, loop over the list and append the text to the text view
+         */
+        TextView mOriginTv = (TextView) findViewById(R.id.origin_tv);
+        mOriginTv.setText(sandwich.getPlaceOfOrigin());
+
+        TextView mAlsoKnownAsTv = (TextView) findViewById(R.id.also_known_tv);
+        for (String alias : sandwich.getAlsoKnownAs()
+                ) {
+            mAlsoKnownAsTv.append(alias + "\n");
+        }
+
+        TextView mDescriptionTv = (TextView) findViewById(R.id.description_tv);
+        mDescriptionTv.setText(sandwich.getDescription());
+
+        TextView mIngredientsTv = (TextView) findViewById(R.id.ingredients_tv);
+        for (String ingredient : sandwich.getIngredients()
+                ) {
+            mIngredientsTv.append(ingredient + "\n");
+        }
 
     }
 }
